@@ -5,9 +5,11 @@ import java.util.Map;
 
 public class CaixaDaLanchonete {
     private Map<String, Double> cardapio;
+    private Pagamento pagamento;
 
     public CaixaDaLanchonete() {
         cardapio = new HashMap<>();
+        pagamento = new Pagamento();
         cardapio.put("cafe", 3.0);
         cardapio.put("chantily", 1.5);
         cardapio.put("suco", 6.2);
@@ -34,33 +36,14 @@ public class CaixaDaLanchonete {
             valorTotal += cardapio.get(item);
         }
 
-        if (!formaDePagamentoValida(formaDePagamento)) {
+        if (!pagamento.formaDePagamentoValida(formaDePagamento)) {
             return "Forma de pagamento inválida";
         }
 
-        double desconto = calcularDesconto(valorTotal, formaDePagamento);
-        double acrescimo = calcularAcrescimo(valorTotal, formaDePagamento);
-
+        double desconto = pagamento.calcularDesconto(valorTotal, formaDePagamento);
+        double acrescimo = pagamento.calcularAcrescimo(valorTotal, formaDePagamento);
         double valorFinal = valorTotal - desconto + acrescimo;
+
         return String.format("Valor total da compra: R$ %.2f", valorFinal).replace(".", ",");
-    }
-
-    private boolean formaDePagamentoValida(String formaDePagamento) {
-        return formaDePagamento.equals("dinheiro") || formaDePagamento.equals("pix")
-                || formaDePagamento.equals("debito") || formaDePagamento.equals("credito");
-    }
-
-    private double calcularDesconto(double valorTotal, String formaDePagamento) {
-        if (formaDePagamento.equals("dinheiro") || formaDePagamento.equals("pix")) {
-            return valorTotal * 0.05;
-        }
-        return 0;
-    }
-
-    private double calcularAcrescimo(double valorTotal, String formaDePagamento) {
-        if (formaDePagamento.equals("credito")) {
-            return valorTotal * 0.03;
-        }
-        return 0;
     }
 }
