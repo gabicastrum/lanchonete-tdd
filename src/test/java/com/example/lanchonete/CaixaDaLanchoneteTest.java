@@ -42,4 +42,32 @@ public class CaixaDaLanchoneteTest {
         CaixaDaLanchonete caixa = new CaixaDaLanchonete();
         assertEquals("Valor total da compra: R$ 13,08", caixa.calcularValorDaCompra("suco,sanduiche", "credito"));
     }
+
+    @Test
+    void pedidoComItemExtraSemPrincipalRetornaMensagem() {
+        CaixaDaLanchonete caixa = new CaixaDaLanchonete();
+        assertEquals("Item extra não pode ser pedido sem o principal",
+                caixa.calcularValorDaCompra("chantily", "dinheiro"));
+    }
+
+    @Test
+    void pedidoComPrincipalEExtraValido() {
+        CaixaDaLanchonete caixa = new CaixaDaLanchonete();
+        assertEquals("Valor total da compra: R$ 4,50",
+                caixa.calcularValorDaCompra("cafe,chantily", "debito"));
+    }
+
+    @Test
+    void pedidoComComboNaoValidaItemExtra() {
+        CaixaDaLanchonete caixa = new CaixaDaLanchonete();
+        assertEquals("Item extra não pode ser pedido sem o principal",
+                caixa.calcularValorDaCompra("combo1,chantily", "dinheiro"));
+    }
+
+    @Test
+    void pedidoComMultiplosExtrasEPrincipalValido() {
+        CaixaDaLanchonete caixa = new CaixaDaLanchonete();
+        assertEquals("Valor total da compra: R$ 6,00",
+                caixa.calcularValorDaCompra("cafe,chantily,chantily", "debito"));
+    }
 }
